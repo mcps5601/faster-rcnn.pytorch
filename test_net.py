@@ -2,6 +2,7 @@
 # Tensorflow Faster R-CNN
 # Licensed under The MIT License [see LICENSE for details]
 # Written by Jiasen Lu, Jianwei Yang, based on code from Ross Girshick
+# Slight modified by Dean Lin in March, 2019
 # --------------------------------------------------------
 from __future__ import absolute_import
 from __future__ import division
@@ -225,7 +226,7 @@ if __name__ == '__main__':
   fasterRCNN.eval()
   empty_array = np.transpose(np.array([[],[],[],[],[]]), (1,0))
   for i in range(num_images):
-
+      a = imdb.image_path_at(i)
       data = next(data_iter)
       im_data.data.resize_(data[0].size()).copy_(data[0])
       im_info.data.resize_(data[1].size()).copy_(data[1])
@@ -312,8 +313,10 @@ if __name__ == '__main__':
       sys.stdout.flush()
 
       if vis:
-          cv2.imwrite('result.png', im2show)
-          pdb.set_trace()
+          if not os.path.exists('./test_results'):
+              os.makedirs('./test_results')
+          cv2.imwrite(os.path.join('./test_results/' + os.path.basename(a)), im2show)
+          #pdb.set_trace()
           #cv2.imshow('test', im2show)
           #cv2.waitKey(0)
 
